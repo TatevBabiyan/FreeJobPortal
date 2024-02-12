@@ -19,22 +19,24 @@ def main():
             name = input("Enter your Name: ")
             surname = input("Enter your Surname: ")
             mail = input("Enter your E-Mail: ")
+            with open("database.txt", 'r') as f:
+                    txt = f.read()
+                    txt = txt.splitlines()
+                    for i in txt:
+                        if mail in i:
+                            print("Already an existing Mail")
+                            mail = input("Enter your E-Mail: ")
             password = getpass('Please enter your password (Your Password must contain: "!,@,#,$,%,^,&,*", Upperletter, Digit): ')
             reg = Validation(name, surname, mail, password)
-            path = "database.txt"
             if reg:
+                path = "database.txt"
                 check_file = os.path.isfile(path)
                 if not check_file:
-                    with open("database.txt", "w") as f:
-                        txt = f.read()
-                        txt = txt.splitlines()
-                        for i in txt:
-                            if mail in i:
-                                raise ValueError("Already an existing Mail")
-                            else:
-                                f.write(f"{reg.name},{reg.surname},{reg.email},{reg.password}\n")
+                    with open("database.txt", 'w') as f:
+                        f.write(f"{reg.name},{reg.surname},{reg.email},{reg.password}\n")
+                        print("Successful Registration")
                 else:
-                    with open("database.txt", "a") as f:
+                    with open("database.txt", 'a') as f:
                         f.write(f"{reg.name},{reg.surname},{reg.email},{reg.password}\n")
                         print("Successful Registration")
 
